@@ -3,35 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Squad Fire Ultra-Realistic AI</title>
+    <title>Voice Control Panel</title>
     <style>
-        :root { --glow: #00f2fe; --primary: #e94560; --dark: #0f0f1b; }
-        body { background-color: var(--dark); color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; overflow: hidden; }
-        .dashboard { background: rgba(22, 33, 62, 0.95); padding: 25px; border-radius: 20px; border: 2px solid var(--primary); box-shadow: 0 0 25px rgba(233, 69, 96, 0.3); width: 90%; max-width: 400px; text-align: center; }
-        
-        /* Visualizer Animation */
-        .visualizer { display: flex; justify-content: center; align-items: flex-end; height: 40px; gap: 4px; margin-bottom: 20px; }
-        .bar { width: 6px; background: var(--glow); border-radius: 3px; height: 8px; }
-        .speaking .bar { animation: bounce 0.6s ease-in-out infinite alternate; }
-        @keyframes bounce { from { height: 8px; } to { height: 40px; } }
-
-        textarea { width: 100%; background: #1a1a2e; color: #fff; border: 1px solid #30475e; border-radius: 12px; padding: 12px; font-size: 15px; margin-bottom: 15px; outline: none; box-sizing: border-box; resize: none; }
-        
-        .control-panel { text-align: left; background: #16213e; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
-        .row { margin-bottom: 12px; }
-        label { font-size: 11px; color: #888; display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
-
-        .btn-main { background: linear-gradient(45deg, var(--primary), #950740); color: white; border: none; padding: 16px; width: 100%; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .btn-main:active { transform: scale(0.98); opacity: 0.9; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f9; padding: 20px; }
+        .voice-box { background: #fff; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { color: #333; margin-bottom: 20px; text-align: center; }
+        .control-group { margin-bottom: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 8px; color: #555; }
+        input[type=range] { width: 100%; accent-color: #6200EE; }
+        button { width: 100%; padding: 15px; background: #6200EE; color: white; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:active { transform: scale(0.98); background: #3700B3; }
+        .val { float: right; color: #6200EE; }
     </style>
 </head>
 <body>
 
-<div class="dashboard">
-    <h2 style="margin: 0 0 10px 0; letter-spacing: 1px;">SQUAD FIRE <span style="color: var(--glow);">AI</span></h2>
+<div class="voice-box">
+    <h2>🔊 Voice Settings</h2>
     
-    <div class="visualizer" id="viz">
+    <div class="control-group">
+        <label>Awaaz (Male/Female) <span id="pVal" class="val">1.0</span></label>
+        <input type="range" id="pitch" min="0.5" max="2.0" step="0.1" value="1.0" oninput="document.getElementById('pVal').innerText=this.value">
+    </div>
+
+    <div class="control-group">
+        <label>Raftaar (Speed) <span id="sVal" class="val">1.0</span></label>
+        <input type="range" id="speed" min="0.5" max="2.0" step="0.1" value="1.0" oninput="document.getElementById('sVal').innerText=this.value">
+    </div>
+
+    <button onclick="speakText('नमस्ते, मैं आपकी आवाज को कंट्रोल कर रहा हूँ। अब आप मुझे मेल या फीमेल बना सकते हैं।')">
+        🔊 TEST VOICE
+    </button>
+</div>
+
+<script>
+function speakText(msg) {
+    var p = document.getElementById('pitch').value;
+    var s = document.getElementById('speed').value;
+    
+    // Yahan hum AndroidBridge check kar rahe hain
+    if (window.AndroidBridge) {
+        window.AndroidBridge.talk(msg, parseFloat(p), parseFloat(s));
+    } else {
+        alert("Ye feature sirf App ke andar kaam karega!");
+    }
+}
+</script>
+
+</body>
+</html>
+
         <div class="bar" style="animation-delay: 0s"></div>
         <div class="bar" style="animation-delay: 0.1s"></div>
         <div class="bar" style="animation-delay: 0.2s"></div>
